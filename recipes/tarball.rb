@@ -21,12 +21,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 # THE SOFTWARE.
 
-platform_name, ext = case [node.platform, node.platform_version]
-                     when ["ubuntu", "12.04"]
-                       ["#{node.platform}-#{node.platform_version.gsub(/_/, '-')}", "tar.gz"]
-                     end
-
-filename = "clang+llvm-#{node.clang.version}-#{node.clang.arch}-linux-#{platform_name}"
+filename = node.clang.filename
+if filename == nil then
+  platform_name, ext = [
+    "#{node.clang.platform}-#{node.clang.platform_version.gsub(/_/, '-')}",
+    "tar.gz",
+  ]
+  filename =
+    "clang+llvm-#{node.clang.version}-#{node.clang.arch}-#{platform_name}"
+end
 
 installation_dir = "/usr/local/clang"
 
